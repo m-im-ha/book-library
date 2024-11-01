@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [books, setBooks] = useState([]);
-    // console.log(books);
+  // console.log(books);
 
   useEffect(() => {
     async function fetchRandomBooks() {
@@ -25,15 +25,16 @@ function Home() {
             const fetchedData = response.data;
             const description = fetchedData.description;
             const publish_date = fetchedData.first_publish_date;
-            const genre = fetchedData.subjects.splice(0,2);
-            console.log(fetchedData);
+            const genre = fetchedData.subjects.splice(0, 2);
+            // console.log(fetchedData);
             return {
               bookTitle,
               bookCover,
               bookAuthor,
               description,
               publish_date,
-              genre
+              genre,
+              key
             };
           })
         );
@@ -66,20 +67,25 @@ function Home() {
           {books.length && (
             <div className="grid grid-cols-3">
               {books.map((book) => (
-                <div
-                  className="card bg-base-100 w-96 shadow-xl"
-                  key={book.bookTitle}
-                >
-                  <figure>
-                    <img src={book.bookCover} alt="Shoes" />
-                  </figure>
-                  <div className="card-body">
-                    <h2 className="card-title">Title : {book.bookTitle}</h2>
-                    <h2 className="card-title">Author : {book.bookAuthor}</h2>
-                    <h4>published : {book.publish_date || "no data"}</h4>
-                    <p>description : {book.description.split(" ").splice(0,10).join(" ")}</p>
+                <Link to={`/book/works/${book.key.split("/").pop()}`} key={book.key}>
+                  <div
+                    className="card bg-base-100 w-96 shadow-xl"
+                    
+                  >
+                    <figure>
+                      <img src={book.bookCover} alt="Shoes" />
+                    </figure>
+                    <div className="card-body">
+                      <h2 className="card-title">Title : {book.bookTitle}</h2>
+                      <h2 className="card-title">Author : {book.bookAuthor}</h2>
+                      <h4>published : {book.publish_date || "no data"}</h4>
+                      <p>
+                        description :{" "}
+                        {book.description.split(" ").splice(0, 10).join(" ")}
+                      </p>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
