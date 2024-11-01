@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 function Home() {
   const [books, setBooks] = useState([]);
-  // console.log(books);
+//   console.log(books);
 
   useEffect(() => {
     async function fetchRandomBooks() {
