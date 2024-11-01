@@ -1,6 +1,6 @@
 function Footer() {
     return (
-        <div>
+        <div className="bg-purple-500 w-full">
             Footer
         </div>
     )

@@ -3,6 +3,7 @@ import AppLayout from "./ui/AppLayout"
 import Error from "./ui/Error"
 import Home from "./ui/Home"
 import ListedBooks from "./ui/ListedBooks"
+import PagesToRead from "./ui/PagesToRead"
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: "/listedbooks",
         element : <ListedBooks/>
+      },
+      {
+        path: "/pagestoread",
+        element : <PagesToRead/>
       }
     ]
 
