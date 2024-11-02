@@ -27,7 +27,7 @@ const {books : contextBooks} = useContext(ReadBooksContext);
                 `https://openlibrary.org${key}.json`
               );
               const fetchedDataTwo = response.data;
-              // console.log(fetchedDataTwo);
+              console.log(fetchedDataTwo);
               const description = typeof fetchedDataTwo.description === "object" ? fetchedDataTwo.description.value.split(" ").splice(0,15).join(" ") : fetchedDataTwo.description.split(" ").splice(0,15).join(" ") || "no data";
               const publish_date = fetchedDataTwo.first_publish_date;
               const genre = fetchedDataTwo.subjects.splice(0, 2);
