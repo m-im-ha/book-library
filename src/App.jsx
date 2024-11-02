@@ -20,7 +20,7 @@ const router = createBrowserRouter([
         element : <ListedBooks/>
       },
       {
-        path: "/pagestoread",
+        path: "/readbooks",
         element : <PagesToRead/>
       },
       {

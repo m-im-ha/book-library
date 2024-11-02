@@ -7,7 +7,7 @@ function Header() {
       <div className="flex gap-4">
         <NavLink>Home</NavLink>
         <NavLink to="/listedbooks">Listed Books</NavLink>
-        <NavLink to="/pagestoread">Pages to read</NavLink>
+        <NavLink to="/readBooks">Read Books</NavLink>
       </div>
       <div className="flex gap-4">
         <button>Sign In</button>

@@ -10,7 +10,7 @@ function Home() {
     async function fetchRandomBooks() {
       try {
         const response = await axios.get(
-          "https://openlibrary.org/subjects/fiction.json?limit=12"
+          "https://openlibrary.org/subjects/fiction.json?limit=24"
         );
         const fetchedData = response.data.works;
         const booksData = await Promise.all(
@@ -22,10 +22,11 @@ function Home() {
             const response = await axios.get(
               `https://openlibrary.org${key}.json`
             );
-            const fetchedData = response.data;
-            const description = fetchedData.description;
-            const publish_date = fetchedData.first_publish_date;
-            const genre = fetchedData.subjects.splice(0, 2);
+            const fetchedDataTwo = response.data;
+            // console.log(fetchedDataTwo);
+            const description = typeof fetchedDataTwo.description === "object" ? fetchedDataTwo.description.value.split(" ").splice(0,15).join(" ") : fetchedDataTwo.description.split(" ").splice(0,15).join(" ") || "no data";
+            const publish_date = fetchedDataTwo.first_publish_date;
+            const genre = fetchedDataTwo.subjects.splice(0, 2);
             // console.log(fetchedData);
             return {
               bookTitle,
@@ -64,7 +65,7 @@ function Home() {
       <div>
         <h3 className="text-center mt-4 mb-6">Books</h3>
         <div>
-          {books.length && (
+          {books.length > 0 && (
             <div className="grid grid-cols-3">
               {books.map((book) => (
                 <Link to={`/book/works/${book.key.split("/").pop()}`} key={book.key}>
@@ -81,7 +82,7 @@ function Home() {
                       <h4>published : {book.publish_date || "no data"}</h4>
                       <p>
                         description :{" "}
-                        {book.description.split(" ").splice(0, 10).join(" ")}
+                        {book.description}
                       </p>
                     </div>
                   </div>
