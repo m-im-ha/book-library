@@ -1,12 +1,19 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { ReadBooksContext } from "../context/ReadbooksProvider";
 
 function BookDetails() {
   const { id } = useParams();
   const [book, setBook] = useState({});
   const [author, setAuthor] = useState("");
   // console.log(book);
+
+  const {addToRead} = useContext(ReadBooksContext);
+
+  function handleRead(){
+    addToRead({...book,author});
+  }
 
   useEffect(() => {
     async function fetchBook(id) {
@@ -17,7 +24,7 @@ function BookDetails() {
         const bookData = response.data;
         setBook({
           title: bookData.title,
-          description: bookData.description,
+          description: typeof bookData.description === "object" ? bookData.description.value : bookData.description || "no data",
           publish_date: bookData.first_publish_date,
           genre: bookData.subjects.splice(0, 4).join(", "),
         });
@@ -52,7 +59,7 @@ function BookDetails() {
         </div>
       )}
       <div className="flex gap-4 mt-5 mb-8">
-        <button className="btn btn-primary">Read</button>
+        <button className="btn btn-primary" onClick={handleRead}>Read</button>
         <button className="btn btn-secondary">Wishlist</button>
       </div>
     </div>

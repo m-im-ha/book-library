@@ -1,41 +1,43 @@
-import { createBrowserRouter, RouterProvider } from "react-router-dom"
-import AppLayout from "./ui/AppLayout"
-import Error from "./ui/Error"
-import Home from "./ui/Home"
-import ListedBooks from "./ui/ListedBooks"
-import PagesToRead from "./ui/PagesToRead"
-import BookDetails from "./ui/BookDetails"
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AppLayout from "./ui/AppLayout";
+import Error from "./ui/Error";
+import Home from "./ui/Home";
+import ListedBooks from "./ui/ListedBooks";
+import PagesToRead from "./ui/PagesToRead";
+import BookDetails from "./ui/BookDetails";
+import { ReadbooksProvider } from "./context/ReadbooksProvider";
 
 const router = createBrowserRouter([
   {
-    element : <AppLayout/>,
-    errorElement : <Error/>,
-    children : [
+    element: <AppLayout />,
+    errorElement: <Error />,
+    children: [
       {
         path: "/",
-        element : <Home/>
+        element: <Home />,
       },
       {
         path: "/listedbooks",
-        element : <ListedBooks/>
+        element: <ListedBooks />,
       },
       {
         path: "/readbooks",
-        element : <PagesToRead/>
+        element: <PagesToRead />,
       },
       {
-        path : "/book/works/:id",
-        element : <BookDetails/>
-      }
-    ]
-
-  }
-])
+        path: "/book/works/:id",
+        element: <BookDetails />,
+      },
+    ],
+  },
+]);
 
 function App() {
   return (
-    <RouterProvider router={router}/>
-  )
+    <ReadbooksProvider>
+      <RouterProvider router={router} />
+    </ReadbooksProvider>
+  );
 }
 
-export default App
+export default App;
