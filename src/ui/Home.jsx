@@ -1,51 +1,58 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { ReadBooksContext } from "../context/ReadbooksProvider";
 
 function Home() {
   const [books, setBooks] = useState([]);
 //   console.log(books);
+const {books : contextBooks} = useContext(ReadBooksContext);
 
   useEffect(() => {
-    async function fetchRandomBooks() {
-      try {
-        const response = await axios.get(
-          "https://openlibrary.org/subjects/fiction.json?limit=24"
-        );
-        const fetchedData = response.data.works;
-        const booksData = await Promise.all(
-          fetchedData.map(async (book) => {
-            const bookCover = `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`;
-            const bookTitle = book.title;
-            const bookAuthor = book.authors[0].name;
-            const key = book.key;
-            const response = await axios.get(
-              `https://openlibrary.org${key}.json`
-            );
-            const fetchedDataTwo = response.data;
-            // console.log(fetchedDataTwo);
-            const description = typeof fetchedDataTwo.description === "object" ? fetchedDataTwo.description.value.split(" ").splice(0,15).join(" ") : fetchedDataTwo.description.split(" ").splice(0,15).join(" ") || "no data";
-            const publish_date = fetchedDataTwo.first_publish_date;
-            const genre = fetchedDataTwo.subjects.splice(0, 2);
-            // console.log(fetchedData);
-            return {
-              bookTitle,
-              bookCover,
-              bookAuthor,
-              description,
-              publish_date,
-              genre,
-              key
-            };
-          })
-        );
-        setBooks(booksData);
-      } catch (error) {
-        console.error(error);
+    if(contextBooks.length === 0){
+
+      async function fetchRandomBooks() {
+        try {
+          const response = await axios.get(
+            "https://openlibrary.org/subjects/fiction.json?limit=24"
+          );
+          const fetchedData = response.data.works;
+          const booksData = await Promise.all(
+            fetchedData.map(async (book) => {
+              const bookCover = `https://covers.openlibrary.org/b/id/${book.cover_id}-M.jpg`;
+              const bookTitle = book.title;
+              const bookAuthor = book.authors[0].name;
+              const key = book.key;
+              const response = await axios.get(
+                `https://openlibrary.org${key}.json`
+              );
+              const fetchedDataTwo = response.data;
+              // console.log(fetchedDataTwo);
+              const description = typeof fetchedDataTwo.description === "object" ? fetchedDataTwo.description.value.split(" ").splice(0,15).join(" ") : fetchedDataTwo.description.split(" ").splice(0,15).join(" ") || "no data";
+              const publish_date = fetchedDataTwo.first_publish_date;
+              const genre = fetchedDataTwo.subjects.splice(0, 2);
+              // console.log(fetchedData);
+              return {
+                bookTitle,
+                bookCover,
+                bookAuthor,
+                description,
+                publish_date,
+                genre,
+                key
+              };
+            })
+          );
+          setBooks(booksData);
+        } catch (error) {
+          console.error(error);
+        }
       }
+      fetchRandomBooks();
     }
-    fetchRandomBooks();
   }, []);
+
+  const booksToDisplay = contextBooks.length > 0 ? contextBooks : books;
 
   return (
     <div>
@@ -65,9 +72,9 @@ function Home() {
       <div>
         <h3 className="text-center mt-4 mb-6">Books</h3>
         <div>
-          {books.length > 0 && (
+          {booksToDisplay.length > 0 && (
             <div className="grid grid-cols-3">
-              {books.map((book) => (
+              {booksToDisplay.map((book) => (
                 <Link to={`/book/works/${book.key.split("/").pop()}`} key={book.key}>
                   <div
                     className="card bg-base-100 w-96 shadow-xl"
